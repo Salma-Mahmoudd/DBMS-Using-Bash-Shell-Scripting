@@ -32,8 +32,8 @@ This project is a command-line-based DBMS written in Bash. It allows users to cr
 
 1. Clone the repository:
    ```bash
-   git clone <repository_url>
-   cd project-name
+   git clone https://github.com/Salma-Mahmoudd/DBMS-Using-Bash-Shell-Scripting.git
+   cd DBMS-Using-Bash-Shell-Scripting
    ```
 2. Run the main script:
    ```bash
