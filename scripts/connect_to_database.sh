@@ -5,17 +5,19 @@
 # 1-> missing arguments
 # 2-> databse doesn't exist
 
-typeset -i res=0
+function connect_to_databae(){
+    typeset -i res=0
 
-if [ $# -eq 0 ]
-then
-    res=1
-else
-    if [ -d $1 ]
+    if [ $# -eq 0 ]
     then
-        cd $1
+        res=1
     else
-        res=2
+        if [ -d $1 ]
+        then
+            cd $1
+        else
+            res=2
+        fi
     fi
-fi
-exit $res
+    return $res
+}
