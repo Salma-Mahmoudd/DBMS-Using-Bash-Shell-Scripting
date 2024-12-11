@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # create table script
-# input tableName arrayofcolumns
+# input tableName col:datatype
 # 1-> missing arguments
 # 2-> table exists
 # 3-> invalid format or datatype
