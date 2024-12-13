@@ -29,13 +29,12 @@ select_from_table(){
             print row
 
         }' metadata
-        awk -F: -v num=$num '{
-            while((!num || NR <= num) && i<= NF){
-                for(i=1; i<= NF; i++) {
-                    row = row $i "\t\t"
-                };
-                print row
-            }
+        awk -F: -v num=$2 '{
+            row=""
+            for(i=1; i<= NF && (!num || NR <= num); i++) {
+                row = row $i "\t\t"
+            };
+            print row
         }' $1
         
     fi
