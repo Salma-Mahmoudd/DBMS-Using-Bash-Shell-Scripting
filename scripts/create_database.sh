@@ -11,12 +11,12 @@ function create_database() {
 
     if [[ -z "$1" ]]; then
         success=1
-    elif [[ -d "$1" ]]; then
+    elif [[ -d "./databases/$1" ]]; then
         success=2
     elif [[ ! "$1" =~ ^[a-zA-Z0-9._]+$ ]]; then
         success=3
     else
-        mkdir "$1" && touch ./"$1"/metadata
+        mkdir -p "./databases/$1" && touch "./databases/$1/metadata"
     fi
 
     return $success
