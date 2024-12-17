@@ -72,9 +72,11 @@ function capture_table_data(){
 	done
 	echo $table_name $table_data
 }
+# function select_table(){
 
+# }
 function selected_database(){
-	open=1
+	local open=1
 
 	while [ $open -eq 1 ]; do
 	choice=$(zenity --width=500 --height=300 --list \
@@ -89,7 +91,6 @@ function selected_database(){
 		"Update table" \
 		"Drop a table")
 	if [ $? -ne 0 ]; then
-		zenity --width=300 --info --text="Operation canceled."
 		open=0
 	elif [ "$choice" =  "Create a table" ]; then
 		table_data=$(capture_table_data $1)
@@ -106,10 +107,29 @@ function selected_database(){
 		if [[ $? -ne 0 ]]; then
 			zenity --width=300 --info --text="No tables found"
 		else
-			zenity --list \
+			choiced_table=$(zenity --list \
         	--title="Database: $1" \
         	--column="Tables" \
-        	$(echo "$tables")
+        	$(echo "$tables"))
+			echo $choiced_table > taxt
+			if [ -n "$choiced_table" ]; then
+				choice2=$(zenity --width=500 --height=300 --list \
+						--title="$choiced_table table" \
+						--text="Do you want to list or drop $choiced_table table?" \
+						--column="Options:" \
+						"list $choiced_table" \
+						"Drop $choiced_table")
+				if [ "$choice2" = "list $choiced_table" ]; then
+					echo hi
+				elif [ "$choice2" = "Drop $choiced_table" ]; then
+						zenity --width=300 --question --text="Are you sure you want to drop this table?"
+						if [ $? -eq 0 ]; then
+                        	drop_table $1 $choiced_table
+                    	fi
+				fi
+			else
+				zenity --width=300 --info --text="No selected table";
+			fi
 		fi
 	elif [ "$choice" =  "Drop a table" ]; then
 		table_name=$(zenity --width=400 --height=150 --entry \
@@ -199,7 +219,9 @@ while [ $open -eq 1 ]; do
 		db_name=$(db_name)
 		check_database_existance $db_name
 		if [ $? -eq 0 ]; then
+			echo $open > text
 			selected_database "$db_name"
+			echo $open >> text
 		else
 			zenity --width=300 --error --text="Database doesn't exist"
 		fi
