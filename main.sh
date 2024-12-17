@@ -2,8 +2,80 @@
 source ./scripts/create_database.sh
 source ./scripts/list_databases.sh
 source ./scripts/drop_database.sh
+source ./scripts/create_table.sh
+source  ./scripts/check_table_existance.sh
+source ./scripts/list_tables.sh
+
+function capture_table_data(){
+	
+	typeset -i num_columns
+
+	open=1
+	while (( open ))
+	do
+    	result=$(zenity --width=400 --height=200 --forms \
+    	--title="Create Table" \
+    	--text="Enter the table name and number of columns:" \
+    	--add-entry="Table Name" \
+    	--add-entry="Number of Columns")
+		original_ifs=$IFS
+		IFS='|' read -r table_name num_columns <<< "$result"
+		IFS=$original_ifs
+		if [ -z $result ]; then
+			zenity --width=300 --info --text="Operation canceled."
+			return 1
+		elif [ -z $table_name ]; then
+			zenity --width=300 --error --text="Error: Table name is missing!";
+		elif [[ ! $table_name =~ ^[a-z0-9_.]+$ ]]; then
+			zenity --width=400 --error --text="Error: File name must contain only letters (a-z, A-Z), numbers (0-9), underscores (_) or dots (.)."
+		elif [ $num_columns -lt 1 ]; then
+			zenity --width=300 --error --text="Error: column number must be greater than 1";	
+		else
+			check_table_existance $table_name
+			if [ $? -ne 0 ]; then
+				open=0
+			else
+				zenity --width=300 --error --text="Error: Table already exists";
+			fi	
+		fi
+	done
+	typeset -i i=0
+	table_data=";"
+	while (( i < num_columns ))
+	do
+		if [[ i -eq 0 ]]; then
+			title="Please enter the primary key: "
+		fi
+    	column=$(zenity  --forms \
+        --title="Add column $((i + 1))" \
+        --text="$title" \
+        --add-entry="Column name" \
+        --add-combo="Data type" --combo-values="string|int|float" \
+		--separator=":" \ )
+		if [ -z $column ]; then
+			zenity --width=300 --info --text="Operation canceled."
+			return 1
+		elif [[ ! $column =~ ^.+:.+$ ]]; then
+			zenity --width=300 --error --text="Error: Column name or datatype is missing!";
+		elif [[ ! $column =~ ^[a-z0-9_]+:.+$ ]]; then
+			zenity --width=300 --error --text="Error: The name must contain only letters (a-z, A-Z), numbers (0-9), underscores (_)";
+		elif [[ $table_data =~ ";"$column ]]; then
+			echo $column >> text
+			echo $table_data >> text
+			zenity --width=300 --error --text="Error: You already entered this column";
+		else
+			table_data=$table_data$column
+			((i++))
+			title=""
+		fi
+	done
+	echo $table_name $table_data
+}
 
 function selected_database(){
+	open=1
+
+	while [ $open -eq 1 ]; do
 	choice=$(zenity --width=500 --height=300 --list \
 		--title="$1 database" \
 		--text="Please select one of the options below:" \
@@ -14,8 +86,30 @@ function selected_database(){
 		"Select from a table" \
 		"Delete from a table" \
 		"Drop a table")
-
-	echo "$choice"
+	if [ $? -ne 0 ]; then
+		zenity --width=300 --info --text="Operation canceled."
+		open=0
+	elif [ "$choice" =  "Create a table" ]; then
+		table_data=$(capture_table_data $1)
+		create_table $1 $table_data
+		if [[ $? -eq 0 ]]; then
+			zenity --width=300 --info --text="Table created successfully."
+		else
+			zenity --width=300 --error --text="Error occured while creating the file";
+		fi
+	elif [ "$choice" =  "List your tables" ]; then
+		tables=$(list_tables $1)
+		if [[ $? -ne 0 ]]; then
+			zenity --width=300 --info --text="No tables found"
+		else
+			# zenity --width=300 --info  --title="Database: $1" --text="$tables";
+			  zenity --list \
+        	--title="Database: $1" \
+        	--column="Tables" \
+        	$(echo "$tables")
+		fi
+	fi
+	done
 }
 
 function db_name(){

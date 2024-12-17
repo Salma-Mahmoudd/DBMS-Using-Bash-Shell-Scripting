@@ -36,12 +36,12 @@ update_table(){
                     split($i, arr, ":");
                     if (arr[1] == column )  {
                         if(arr[2] == "int" && value ~ /^[0-9]+$/ || arr[2] == "string" ){
-                         ind=i-1;
-                         res=0;
-                     }else{
-                         res=4;
-                     };
-                     break;
+                            ind=i-1;
+                            res=0;
+                        }else{
+                            res=4;
+                        };
+                        break;
                     }
                 }
             } END{ print res, ind }')
