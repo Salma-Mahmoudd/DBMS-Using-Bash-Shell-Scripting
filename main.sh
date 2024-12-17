@@ -156,7 +156,6 @@ function db_name(){
 	echo "$db_name"
 }
 
-
 open=1
 
 while [ $open -eq 1 ]; do
