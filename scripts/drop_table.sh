@@ -7,13 +7,14 @@
 
 function drop_table() {
     local success=0
-
-    if [[ -z "$1" ]]; then
+    echo $2 > text
+    if [[ -z "$2" ]]; then
         success=1
-    elif [[ ! -f "$1" ]]; then
+    elif [[ ! -f "./databases/$1/$2" ]]; then
         success=2
     else
-        rm "$1"
+        sed -i "/^$2;/d" ./databases/$1/metadata
+        rm "./databases/$1/$2"
     fi
 
     return $success
