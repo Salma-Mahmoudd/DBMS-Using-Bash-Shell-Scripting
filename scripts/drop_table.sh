@@ -7,7 +7,7 @@
 
 function drop_table() {
     local success=0
-    echo $2 > text
+
     if [[ -z "$2" ]]; then
         success=1
     elif [[ ! -f "./databases/$1/$2" ]]; then

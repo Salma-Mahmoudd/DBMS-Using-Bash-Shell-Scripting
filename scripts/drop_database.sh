@@ -6,7 +6,7 @@
 # 2-> databse doesn't exist
 
 function drop_database(){
-    typeset -i res=0
+    local res=0
 
     if [ $# -eq 0 ]
     then
@@ -19,5 +19,6 @@ function drop_database(){
                 res=2
         fi
     fi
+
     return $res
 }

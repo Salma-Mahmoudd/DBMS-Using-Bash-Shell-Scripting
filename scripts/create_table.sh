@@ -8,9 +8,7 @@
 # 3 if invalid syntax and 4 if there is no primary key
 
 
-function create_table() {
-    
+function create_table() { 
     echo "$2$3" >> "./databases/$1/metadata"
-    touch "./databases/$1/$2"       
-    
+    touch "./databases/$1/$2"    
 }
