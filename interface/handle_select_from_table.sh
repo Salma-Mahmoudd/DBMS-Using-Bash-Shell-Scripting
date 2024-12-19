@@ -29,7 +29,7 @@ function handle_select(){
 				condition=$(zenity --width=400 --height=200 --forms \
    				--title="Select from $2" \
     			--text="Enter your condition:" \
-   				--add-entry="Column Name" \
+   				--add-combo="column" --combo-values="$(echo ${columns[@]} | tr " " "|")" \
     			--add-entry="Value" \
     			--separator=":")
 
@@ -37,8 +37,8 @@ function handle_select(){
 				if [ -z $condition ]; then
 					zenity --width=300 --info --text="Operation canceled."
 					return
-				elif [ $(echo "$columns" | grep -wc "$column" ) -eq 0 ]; then
-					zenity --width=300 --error --text="Error: Column does not exist";
+				elif [ -z $column ]; then
+					zenity --width=300 --error --text="Error: Enter the column name";
 				else
 					break
 				fi

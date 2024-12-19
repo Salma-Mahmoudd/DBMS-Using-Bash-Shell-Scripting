@@ -1,38 +1,39 @@
-#!/bin/bash -x
+#!/bin/bash
 
 # update_table: update table data
-# $1: table name
-# $2: search column and value
+# $1: database name
+# $2: table name
+# $3: condition column name and value (e.g., column2:2)
 # $3: column name and it's updated value (e.g., column2:2)
-#
+
 # Return:
 # 0 if success,
-# 1 duplicate primary key
-# 2 invalid datatype
+# 1 invalid datatype
 
 update_table(){
     typeset -i res=0 ind i=0 indices[2]
-    local  values[2]
-
+    local values[2]
+    local database=$1
+    local file=$2
    
+    shift 2
     
-    metadata=`grep "^$1;" "/databases/$1/metadata"`
-    file=$1
-    shift
+    metadata=`grep "^$file;" ./databases/$database/metadata`
     while (( $# > 0 && $res == 0 ))
         do
             
             column=`echo $1 | cut -d: -f1`
             value=`echo $1 | cut -d: -f2`
             result=$(echo $metadata | awk -v column="$column" -v value="$value" -F';' '
-            {   res = 3;
+            {
                 for(i=2; i<=NF; i++) {
                     split($i, arr, ":");
-                    res=4
+                    res=1
                     if (arr[1] == column )  {
-                        if(arr[2] == "int" && value ~ /^-?[0-9]+$/ 
-                        || arr[2] == "string" && value !~ /:/  
-                        || arr[2] == "float" && value ~ /^-?[0-9]+(.[0-9]+)?$/ )
+                        if((arr[2] == "int" && value ~ /^-?[0-9]+$/) || \
+                        (arr[2] == "string" && value !~ /:/) || \
+                        (arr[2] == "float" && value ~ /^-?[0-9]+(.[0-9]+)?$/) || \
+                        (value == ""))
                         {
                             ind=i-1;
                             res=0;
@@ -47,10 +48,6 @@ update_table(){
             ((i++))
             shift
     done
-    if [ $res -eq 0 &&  ${indices[1]} -eq 1 ]; then
-        res=$(grep -wc "^${values[1]}:" /database/$1/$2)
-    fi
-
     if [ $res -eq 0 ];  then
         awk -F':' -v keyval="${values[0]}" -v value="${values[1]}" -v key="${indices[0]}" -v ind="${indices[1]}" '
         {
@@ -58,7 +55,7 @@ update_table(){
                 $ind = value;
             }
             print;
-        }' OFS=':' "/databases/$1/$2" > temp.txt && mv temp.txt "/databases/$1/$2"
+        }' OFS=':' ./databases/$database/$file > temp.txt && mv temp.txt ./databases/$database/$file
 
     fi
     return $res
