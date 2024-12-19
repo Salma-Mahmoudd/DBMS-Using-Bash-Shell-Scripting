@@ -7,40 +7,36 @@
 #
 # Return:
 # 0 if success,
-# 1 if arguments do not exist
-# 2 if table does not exist,
-# 3 column doesn't exist
-# 4 if invalid data type
+# 1 duplicate primary key
+# 2 invalid datatype
 
 update_table(){
-    typeset -i res=0 ind i=0 arr[2]
-    typeset  columns[2]
+    typeset -i res=0 ind i=0 indices[2]
+    local  values[2]
 
-    if [ $# -lt 3 ]
-    then
-        res=1
-    elif [ ! -f "$1" ]
-    then
-        res=2
-    else
-        metadata=`grep "^$1;" metadata`
-        file=$1
-        shift
-        while (( $# > 0 && $res == 0 ))
+   
+    
+    metadata=`grep "^$1;" "/databases/$1/metadata"`
+    file=$1
+    shift
+    while (( $# > 0 && $res == 0 ))
         do
+            
             column=`echo $1 | cut -d: -f1`
             value=`echo $1 | cut -d: -f2`
             result=$(echo $metadata | awk -v column="$column" -v value="$value" -F';' '
             {   res = 3;
                 for(i=2; i<=NF; i++) {
                     split($i, arr, ":");
+                    res=4
                     if (arr[1] == column )  {
-                        if(arr[2] == "int" && value ~ /^[0-9]+$/ || arr[2] == "string" ){
+                        if(arr[2] == "int" && value ~ /^-?[0-9]+$/ 
+                        || arr[2] == "string" && value !~ /:/  
+                        || arr[2] == "float" && value ~ /^-?[0-9]+(.[0-9]+)?$/ )
+                        {
                             ind=i-1;
                             res=0;
-                        }else{
-                            res=4;
-                        };
+                        }
                         break;
                     }
                 }
@@ -50,18 +46,20 @@ update_table(){
             indices[$i]=$ind
             ((i++))
             shift
-        done
-        if [ $res -eq 0 ]
-        then
-           awk -F':' -v keyval="${values[0]}" -v value="${values[1]}" -v key="${indices[0]}" -v ind="${indices[1]}" '
-           {
-                 if ($key == keyval) {
-                     $ind = value;
-                    }
-             print;
-            }' OFS=':' "$file" > temp.txt && mv temp.txt "$file"
+    done
+    if [ $res -eq 0 &&  ${indices[1]} -eq 1 ]; then
+        res=$(grep -wc "^${values[1]}:" /database/$1/$2)
+    fi
 
-        fi
+    if [ $res -eq 0 ];  then
+        awk -F':' -v keyval="${values[0]}" -v value="${values[1]}" -v key="${indices[0]}" -v ind="${indices[1]}" '
+        {
+            if ($key == keyval) {
+                $ind = value;
+            }
+            print;
+        }' OFS=':' "/databases/$1/$2" > temp.txt && mv temp.txt "/databases/$1/$2"
+
     fi
     return $res
 }

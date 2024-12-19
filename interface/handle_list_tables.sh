@@ -51,8 +51,8 @@ function handle_list_tables(){
                         open2=0
                     elif [ "$choice2" = "Select data from the table" ]; then
                         handle_select "$db_name" "$choiced_table"
-                    elif [ "$choice2" = "Update the table data"]; then
-                        handle_select "$db_name" "$choiced_table"
+                    elif [ "$choice2" = "Update the table data" ]; then
+                        handle_update "$db_name" "$choiced_table"
                     fi
 
                 done
