@@ -3,6 +3,8 @@
 source ./scripts/list_tables.sh
 source ./interface/handle_drop_table.sh
 source ./interface/handle_insert_into_table.sh
+source ./interface/handle_select_from_table.sh
+source ./interface/handle_update.sh
 
 function handle_list_tables(){
     local db_name tables
@@ -47,7 +49,12 @@ function handle_list_tables(){
                     elif [ "$choice2" = "Drop the table" ]; then
                         handle_drop_table "$db_name" "$choiced_table"
                         open2=0
+                    elif [ "$choice2" = "Select data from the table" ]; then
+                        handle_select "$db_name" "$choiced_table"
+                    elif [ "$choice2" = "Update the table data"]; then
+                        handle_select "$db_name" "$choiced_table"
                     fi
+
                 done
             fi
         fi
