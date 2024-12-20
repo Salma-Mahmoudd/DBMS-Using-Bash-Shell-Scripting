@@ -3,6 +3,15 @@
 source ./scripts/drop_database.sh
 source ./interface/get_database_name.sh
 
+# handle_drop_database: A function to handle dropping of a database after user confirmation.
+#
+# $1: (Optional) Database name. If not provided, prompts the user to select a database.
+#
+# Returns: Prompts user for confirmation, deletes the database if confirmed, 
+# or displays errors if the database does not exist.
+#
+# Usage: handle_drop_database "optional_database_name"
+
 function handle_drop_database(){
     local db_name
     typeset -i op

@@ -5,6 +5,17 @@ source ./scripts/get_table_columns.sh
 source ./scripts/get_table_datatypes.sh
 source ./scripts/insert_into_table.sh
 
+# handle_insert_into_table: A function to insert data into
+# a table after user input validation.
+#
+# $1: Database name.
+# $2: Table name.
+#
+# Returns: Prompts user to enter values for each column,
+# validates input, and inserts the row if valid.
+#
+# Usage: handle_insert_into_table "database_name" "table_name"
+
 function handle_insert_into_table(){
     typeset -i num_columns open
     local row form_args i

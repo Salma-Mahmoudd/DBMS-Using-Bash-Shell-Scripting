@@ -3,6 +3,16 @@
 source ./interface/get_table_name.sh
 source ./scripts/drop_table.sh
 
+# handle_drop_table: A function to drop a table from a database after user confirmation.
+#
+# $1: Database name.
+# $2: (Optional) Table name. If not provided, prompts the user to select a table.
+#
+# Returns: Prompts user for confirmation, deletes the table if confirmed,
+# or shows appropriate error messages.
+#
+# Usage: handle_drop_table "database_name" "optional_table_name"
+
 function handle_drop_table(){
     local db_name table_name
     typeset -i op

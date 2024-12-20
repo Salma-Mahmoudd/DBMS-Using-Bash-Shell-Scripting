@@ -1,8 +1,19 @@
 #!/bin/bash
-set -x
+
 source ./scripts/get_table_columns.sh
 source ./scripts/num_columns_of_table.sh
 source ./scripts/delete_from_table.sh
+
+# handle_delete_from_table: A function to handle deletion of records from a table
+# based on user-selected conditions.
+#
+# $1: Database name.
+# $2: Table name.
+#
+# Returns: Prompts the user to select columns and enter values
+# for deletion conditions, then deletes matching records from the table.
+#
+# Usage: handle_delete_from_table "database_name" "table_name"
 
 function handle_delete_from_table(){
     typeset -i num_columns
