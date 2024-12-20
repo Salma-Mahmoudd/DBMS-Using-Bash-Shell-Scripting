@@ -3,6 +3,15 @@
 source ./scripts/create_table.sh
 source ./interface/capture_table_data.sh
 
+# handle_create_table: A function to capture table details from the user
+# and create the table in the specified database.
+#
+# $1: Database name.
+#
+# Returns: Success or error message based on the table creation outcome.
+#
+# Usage: handle_create_table "database_name"
+
 function handle_create_table(){
     local table_data
     typeset -i op

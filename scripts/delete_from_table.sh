@@ -4,7 +4,7 @@ source ./scripts/get_table_columns.sh
 
 function delete_from_table(){
     typeset -i field_num i=1
-    local field_name field_val table_path ت
+    local field_name field_val table_path
     local -a columns_name
 
     read -r -a columns_name <<< "$(get_table_columns "$1" "$2")"

@@ -3,6 +3,13 @@
 source ./scripts/create_database.sh
 source ./interface/get_database_name.sh
 
+# handle_create_database: A function to prompt the user to create a new database.
+# It validates the database name and handles errors like name conflicts or invalid characters.
+#
+# Returns: Success or error messages based on the outcome.
+#
+# Usage: handle_create_database
+
 function handle_create_database(){
     local db_name
     typeset -i open

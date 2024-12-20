@@ -4,6 +4,17 @@ source ./interface/get_database_name.sh
 source ./interface/handle_create_table.sh
 source ./interface/handle_list_tables.sh
 
+# handle_connect_to_database: A function to connect to a specified database,
+# validate its existence, and provide options to interact with it 
+# (e.g., create a table or list tables).
+#
+# $1: (Optional) Database name provided by the user.
+# If not provided, prompts the user to select the database.
+#
+# Returns: Provides interactive options for creating or listing tables in the database.
+#
+# Usage: handle_connect_to_database "optional_database_name"
+
 function handle_connect_to_database(){
     local db_name choice
     typeset -i open

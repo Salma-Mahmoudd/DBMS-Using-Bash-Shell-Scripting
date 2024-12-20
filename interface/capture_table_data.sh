@@ -2,6 +2,18 @@
 
 source ./scripts/check_table_existance.sh
 
+# capture_table_data: Function to capture table details from the user
+# (table name, number of columns, and column specifications) using Zenity.
+# It will validate the table name and the number of columns, 
+# and will check if the table already exists in the database.
+#
+# $1: Database name provided by the user.
+#
+# Returns: Table name, 
+# column definitions, and data types as "table_name:column1:data_type;column2:data_type;..."
+#
+# Usage: table_details=$(capture_table_data "your_database_name")
+
 function capture_table_data(){
 	local result table_name db_name title column 
 	typeset -i num_columns open i op
