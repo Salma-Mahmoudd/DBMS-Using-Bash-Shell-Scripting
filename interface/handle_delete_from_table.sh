@@ -2,6 +2,7 @@
 set -x
 source ./scripts/get_table_columns.sh
 source ./scripts/num_columns_of_table.sh
+source ./scripts/delete_from_table.sh
 
 function handle_delete_from_table(){
     typeset -i num_columns
@@ -11,8 +12,8 @@ function handle_delete_from_table(){
     num_columns_of_table "$1" "$2"
     num_columns="$?"
     read -r -a columns_name <<< "$(get_table_columns "$db_name" "$table_name")"
-
     list+=(true "${columns_name[0]}")
+
     for (( i = 1; i < num_columns; i++ )); do
         list+=(false "${columns_name[$i]}")
     done
@@ -23,9 +24,10 @@ function handle_delete_from_table(){
         --column="Check" --column="Column name" \
         "${list[@]}" \
         --radiolist)
+
     col_val=$(zenity --entry --width=500 --height=150 \
         --title="Condition to delete data" \
         --text="Enter value of $col_name column")
 
-    echo "$col_val"
+    delete_from_table "$db_name" "$table_name" "$col_name" "$col_val"
 }
