@@ -5,6 +5,7 @@ source ./interface/handle_drop_table.sh
 source ./interface/handle_insert_into_table.sh
 source ./interface/handle_select_from_table.sh
 source ./interface/handle_update.sh
+source ./interface/handle_delete_from_table.sh
 
 function handle_list_tables(){
     local db_name tables
@@ -34,7 +35,6 @@ function handle_list_tables(){
                         --title="$choiced_table table in $db_name database" \
                         --text="Please select one of the options below:" \
                         --column="Options:" \
-                        "Show the entire table data" \
                         "Insert data into the table" \
                         "Select data from the table" \
                         "Delete data from the table" \
@@ -46,13 +46,15 @@ function handle_list_tables(){
                         open2=0
                     elif [ "$choice2" = "Insert data into the table" ]; then
                         handle_insert_into_table "$db_name" "$choiced_table"
-                    elif [ "$choice2" = "Drop the table" ]; then
-                        handle_drop_table "$db_name" "$choiced_table"
-                        open2=0
                     elif [ "$choice2" = "Select data from the table" ]; then
                         handle_select "$db_name" "$choiced_table"
                     elif [ "$choice2" = "Update the table data" ]; then
                         handle_update "$db_name" "$choiced_table"
+                    elif [ "$choice2" = "Delete data from the table" ]; then
+                        handle_delete_from_table "$db_name" "$choiced_table"
+                    elif [ "$choice2" = "Drop the table" ]; then
+                        handle_drop_table "$db_name" "$choiced_table"
+                        open2=0
                     fi
 
                 done

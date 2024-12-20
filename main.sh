@@ -20,18 +20,13 @@ while [ $open -eq 1 ]; do
 	if [ $? -ne 0 ]; then
 		zenity --width=300 --info --text="Operation canceled."
 		open=0
-
 	elif [ "$choice" =  "Create a database" ]; then
 		handle_create_database
-
 	elif [ "$choice" = "List your databases" ]; then
 		handle_list_databases
-
 	elif [ "$choice" = "Connect to a database" ]; then
 		handle_connect_to_database
-
 	elif [ "$choice" = "Drop a database" ]; then
 		handle_drop_database
-
 	fi
 done
