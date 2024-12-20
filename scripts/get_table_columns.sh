@@ -1,6 +1,17 @@
 #!/bin/bash
-#$1 database name
-#$2 table name
+
+# get_table_columns: Retrieves the column names of a table from the database.
+#
+# This function extracts and returns the column names from the metadata of a table.
+#
+# $1: The name of the database.
+# $2: The name of the table.
+#
+# Returns:
+#   The column names, separated by spaces.
+#
+# Example:
+#   get_table_columns "my_database" "my_table"
 
 function get_table_columns() {
     local columns

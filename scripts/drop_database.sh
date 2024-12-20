@@ -1,9 +1,19 @@
 #!/bin/bash
 
-# drop databses
-# input database name
-# 1-> missing arguments
-# 2-> databse doesn't exist
+# drop_database: Deletes a database directory if it exists.
+#
+# This function removes the specified database directory and its contents.
+# If the database doesn't exist, it returns an error.
+#
+# $1: The name of the database to be dropped.
+#
+# Example:
+#   drop_database "my_database"
+#
+# Returns:
+#   0 - Success.
+#   1 - No database name provided.
+#   2 - Database does not exist.
 
 function drop_database(){
     local res=0

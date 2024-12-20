@@ -3,6 +3,25 @@
 source ./scripts/num_columns_of_table.sh
 source ./scripts/get_table_datatypes.sh
 
+# insert_into_table: Inserts data into a table, with validation based on column data types.
+#
+# This function inserts data into a specified table
+# after validating the values against their column data types.
+#
+# $1: The name of the database.
+# $2: The name of the table.
+# $3: The values to be inserted in the format
+# "col1_val:col2_val:..." where colN_val corresponds to column N.
+#
+# Returns:
+#   0 - Success (Data inserted)
+#   1 - Error (Primary key not provided)
+#   2 - Error (Primary key already exists)
+#   3 - Error (Data type mismatch)
+#
+# Example:
+#   insert_into_table "my_database" "my_table" "123:John Doe:30"
+
 function insert_into_table(){
     typeset -i err num_columns i
     local table_path pk val
