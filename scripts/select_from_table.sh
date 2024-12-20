@@ -1,11 +1,21 @@
 #!/bin/bash
-# select_from_table: select table data
-# $1: database name
-# $2: table name
-# rest of input are condition and columns
+
+# select_from_table: Select specific columns from a table based on conditions.
 #
-# Return:
-# 0 if success,
+# This function extracts specific columns from a table in the specified database, filtering rows based on conditions.
+# It reads metadata to identify column indices and applies filters to match rows based on the specified conditions.
+#
+# Parameters:
+#   $1 - The name of the database.
+#   $2 - The name of the table.
+#   $3 - The condition for filtering rows, specified as "column:value" pairs.
+#
+# Returns:
+#   A formatted output of selected columns from the table matching the condition.
+#
+# Example:
+#   select_from_table "my_database" "my_table" "column1:10" "column2:active"
+#   Output: Extracts and displays rows from "my_table" in "my_database" where column1 equals 10 and column2 equals "active".
 
 function select_from_table(){
 

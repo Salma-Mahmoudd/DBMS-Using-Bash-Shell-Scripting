@@ -1,14 +1,23 @@
 #!/bin/bash
 
-# update_table: update table data
-# $1: database name
-# $2: table name
-# $3: condition column name and value (e.g., column2:2)
-# $3: column name and it's updated value (e.g., column2:2)
-
-# Return:
-# 0 if success,
-# 1 invalid datatype
+# update_table: Update table data in the specified database.
+#
+# This function updates specific columns in a table based on given conditions.
+# It checks the datatype of the column, validates the input, and modifies the table entries accordingly.
+#
+# Parameters:
+#   $1 - The name of the database.
+#   $2 - The name of the table.
+#   $3 - The condition for the column to be updated (e.g., "column2:2").
+#   $4 - The column name and the new value to update (e.g., "column2:3").
+#
+# Returns:
+#   0 - Success (data updated).
+#   1 - Invalid datatype or other error.
+#
+# Example:
+#   update_table "my_database" "my_table" "column2:2" "column3:new_value"
+#   Output: Updates column3 with "new_value" for rows where column2 equals 2 in "my_table".
 
 update_table(){
     typeset -i res=0 ind i=0 indices[2]

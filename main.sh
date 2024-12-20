@@ -5,6 +5,20 @@ source ./interface/handle_list_databases.sh
 source ./interface/handle_connect_to_database.sh
 source ./interface/handle_drop_database.sh
 
+# main.sh: A script to manage databases interactively.
+#
+# This script provides a graphical interface to perform database operations, including creating, listing, connecting to, and dropping databases.
+#
+# Parameters:
+#   None
+#
+# Returns:
+#   Runs until the user cancels or exits the script.
+#
+# Example:
+#   source main.sh
+#   Output: Prompts the user to perform various database operations through a menu.
+
 open=1
 
 while [ $open -eq 1 ]; do

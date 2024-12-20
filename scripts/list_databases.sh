@@ -1,8 +1,18 @@
 #!/bin/bash
 
-# list_databases: to show user databases
+# list_databases: Lists all available databases in the "databases" directory.
 #
-# Return: list if success, 1 if No databases found.
+# This function checks if the "databases" directory exists, and if it does,
+# it lists all the directories (databases) inside it.
+# If the directory doesn't exist or is empty, it exits with an error.
+#
+# Returns:
+#   0 - Success (Databases listed)
+#   1 - Error (No "databases" directory found or it is empty)
+#
+# Example:
+#   list_databases
+#   Output: Lists database names if available, otherwise no output.
 
 function list_databases() {
     local success=1
