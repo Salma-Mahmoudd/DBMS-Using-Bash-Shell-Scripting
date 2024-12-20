@@ -2,6 +2,19 @@
 source ./scripts/get_table_columns.sh
 source ./scripts/select_from_table.sh
 
+# handle_select: A function to interactively select
+# data from a table with optional conditions.
+#
+# This script allows users to select specific columns
+# from a table and optionally filter the results based on a condition.
+#
+# $1: The database name.
+# $2: The table name.
+#
+# Returns: Prompts the user to select columns and apply conditions for the selection process.
+#
+# Usage: handle_select "database_name" "table_name"
+
 function handle_select(){
 	local choice=""
 	local columns=""

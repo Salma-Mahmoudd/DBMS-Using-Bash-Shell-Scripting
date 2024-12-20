@@ -2,6 +2,15 @@
 source ./scripts/get_table_columns.sh
 source ./scripts/update_table.sh
 
+# handle_update: A function to update rows in a table based on user input.
+#
+# This script allows users to select columns and update their values based on conditions.
+#
+# $1: The database name.
+# $2: The table name.
+#
+# Usage: handle_update "database_name" "table_name"
+
 function handle_update(){
     typeset -i i=0
 	local update_field=""

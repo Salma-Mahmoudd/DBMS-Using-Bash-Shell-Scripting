@@ -4,6 +4,18 @@ source ./scripts/list_databases.sh
 source ./interface/handle_connect_to_database.sh
 source ./interface/handle_drop_database.sh
 
+# handle_list_databases: A function to list databases and provide options to connect or drop.
+#
+# This script lists available databases and allows the user to select one,
+# either to connect or drop.
+#
+# $1: No arguments required.
+#
+# Returns: Prompts the user to select a database,
+# then provides options to either connect to it or drop it.
+#
+# Usage: handle_list_databases
+
 function handle_list_databases(){
     local databases choice choice2
     typeset -i open op

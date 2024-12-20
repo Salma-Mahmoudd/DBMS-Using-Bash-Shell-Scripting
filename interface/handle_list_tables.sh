@@ -7,6 +7,19 @@ source ./interface/handle_select_from_table.sh
 source ./interface/handle_update.sh
 source ./interface/handle_delete_from_table.sh
 
+# handle_list_tables: A function to list tables in a specified database
+# and provide options to interact with them.
+#
+# This script lists all tables in the provided database,
+# giving users the option to select a table and perform actions
+# like inserting, selecting, updating, deleting data, or dropping the table.
+#
+# $1: The database name.
+#
+# Returns: Prompts the user to select a table and choose an action from the provided options.
+#
+# Usage: handle_list_tables "database_name"
+
 function handle_list_tables(){
     local db_name tables
     typeset -i open1 open2 op
