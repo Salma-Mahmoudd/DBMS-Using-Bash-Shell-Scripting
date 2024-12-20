@@ -1,21 +1,11 @@
 #!/bin/bash
-
-# select_from_table: Select specific columns from a table based on conditions.
+# select_from_table: select table data
+# $1: database name
+# $2: table name
+# rest of input are condition and columns
 #
-# This function extracts specific columns from a table in the specified database, filtering rows based on conditions.
-# It reads metadata to identify column indices and applies filters to match rows based on the specified conditions.
-#
-# Parameters:
-#   $1 - The name of the database.
-#   $2 - The name of the table.
-#   $3 - The condition for filtering rows, specified as "column:value" pairs.
-#
-# Returns:
-#   A formatted output of selected columns from the table matching the condition.
-#
-# Example:
-#   select_from_table "my_database" "my_table" "column1:10" "column2:active"
-#   Output: Extracts and displays rows from "my_table" in "my_database" where column1 equals 10 and column2 equals "active".
+# Return:
+# 0 if success,
 
 function select_from_table(){
 
@@ -53,23 +43,22 @@ function select_from_table(){
             value=$(echo $condition | cut -d: -f2)
         else
             indices[$i]=$ind
-            columns[$i]=$1
         fi
         ((i++))
         shift
     done
     row=""
-    for name in ${columns[@]}
-    do
-        row="$row$name\t\t"
-    done
-    row="$row\n$(awk -F: -v indices="${indices[*]}" -v size=${#indices[@]} -v condition_ind="$condition_ind" -v value="$value" '{
+    row="$(awk -F: -v indices="${indices[*]}" -v size=${#indices[@]} -v condition_ind="$condition_ind" -v value="$value" '{
     split(indices, indicesArr, " ");
     if (!condition_ind || $condition_ind == value) {
-        for (ind in indicesArr) {
-            row = row $indicesArr[ind] "\t\t"
+        for (i=1; i<=size; i++) {
+            if($indicesArr[i] == "" ){
+                value="!"
+            }else{
+                value=$indicesArr[i]
+            }
+            row = row " " value
         }
-        row = row "\n";
     }
     } END { print row }' databases/$database/$table)"   
     echo -e "$row"

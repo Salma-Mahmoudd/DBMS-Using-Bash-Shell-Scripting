@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -x
 source ./scripts/check_table_existance.sh
 
 # capture_table_data: Function to capture table details from the user
@@ -15,7 +15,7 @@ source ./scripts/check_table_existance.sh
 # Usage: table_details=$(capture_table_data "your_database_name")
 
 function capture_table_data(){
-	local result table_name db_name title column 
+	local result table_name db_name title column table_data name datatype 
 	typeset -i num_columns open i op
 
 	db_name="$1"
@@ -60,14 +60,15 @@ function capture_table_data(){
 			--add-combo="Data type" --combo-values="string|int|float" \
 			--separator=":" \ )
 
+		IFS=':' read -r name datatype <<< "$column"
 		if [ -z "$column" ]; then
 			zenity --width=300 --info --text="Operation canceled."
 			return 1
-		elif [[ ! $column =~ ^.+:.+$ ]]; then
+		elif [[ -z $name || $datatype = ' ' ]]; then
 			zenity --width=300 --error --text="Error: Column name or datatype is missing!";
 		elif [[ ! $column =~ ^[a-zA-Z0-9_]+:.+$ ]]; then
 			zenity --width=300 --error --text="Error: The name must contain only letters (a-z, A-Z), numbers (0-9), underscores (_)";
-		elif [[ $table_data =~ ";"$column ]]; then
+		elif [[ $table_data =~ ";"$name ]]; then
 			zenity --width=300 --error --text="Error: You already entered this column";
 		else
 			table_data=$table_data";"$column

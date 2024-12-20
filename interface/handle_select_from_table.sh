@@ -21,6 +21,7 @@ function handle_select(){
 	local options=""
 	local condition=":"
 	local column
+	local -a headers values
 
 	columns=$(get_table_columns $1 $2)
 	for column in $columns; do
@@ -57,15 +58,12 @@ function handle_select(){
 				fi
 			done
 		fi
-		rows=$(select_from_table $1 $2 $condition ${choices[@]})
-		original_ifs=$IFS
-		IFS=$'\n' read -d '' -r -a row_array <<< "$rows"
-		IFS=$original_ifs
-		zenity --list \
-        	--title="rows: $1" \
-        	--column="Tables" \
-        "${row_array[@]}"
-
+		rows="$(select_from_table $1 $2 $condition ${choices[@]})"
+    	for column in $choices; do
+        	headers+=("--column=$column")
+    	done
+    	read -r -a values <<< "$rows"
+		zenity --list "${headers[@]}" "${values[@]}"
 	fi
 
 }
