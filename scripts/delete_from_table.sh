@@ -2,6 +2,22 @@
 
 source ./scripts/get_table_columns.sh
 
+# delete_from_table: Deletes rows from a table based on specified field and value.
+#
+# This function removes rows from a table where the specified field name and value match.
+# It reads through the table data, filters out the matching rows, and updates the table.
+#
+# $1: The name of the database.
+# $2: The name of the table.
+# $3: The field name to check.
+# $4: The field value to match.
+#
+# Example:
+#   delete_from_table "my_database" "my_table" "column_name" "value_to_delete"
+#
+# Returns:
+#   None.
+
 function delete_from_table(){
     typeset -i field_num i=1
     local field_name field_val table_path

@@ -1,12 +1,19 @@
 #!/bin/bash
 
-# create_table: create table in specific database and its metadata. First column must be a primary key
-# $1: table name
-# $2 $3...: column names and their types (e.g., column1 primary:string, column2:int)
+# create_table: Creates a new table in the specified database.
 #
-# Return: 0 if success, 1 if arguments do not exist, 2 if table exists,
-# 3 if invalid syntax and 4 if there is no primary key
-
+# This function creates a table within the specified database.
+# It updates the metadata of the database and creates a new file to store table data.
+#
+# $1: The name of the database.
+# $2: The name of the table.
+# $3: Column definitions.
+#
+# Example:
+#   create_table "my_database" "my_table" "column1 datatype column2 datatype"
+#
+# Returns:
+#   None.
 
 function create_table() { 
     echo "$2$3" >> "./databases/$1/metadata"

@@ -1,10 +1,17 @@
 #!/bin/bash
 
-# create_database: create database folder
-# $1: database name
+# create_database: Creates a new database.
 #
-# Return: 0 if success, 1 if argument does not exist,
-# 2 if database already exists and 3 if invalid name format
+# This function creates a new database with the specified name if it doesn't already exist.
+# It checks for the validity of the database name and returns appropriate status codes.
+#
+# $1: The name of the database.
+#
+# Returns:
+#   0 - Successfully created the database.
+#   1 - Missing database name.
+#   2 - Database already exists.
+#   3 - Invalid database name.
 
 function create_database() {
     local success=0
